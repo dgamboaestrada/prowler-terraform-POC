@@ -1,0 +1,49 @@
+resource "aws_codebuild_project" "default" {
+  name          = "${local.prefix}prowler"
+  description   = var.description
+  build_timeout = var.build_timeout
+  service_role  = aws_iam_role.default.arn
+
+  artifacts {
+    type     = "S3"
+    location = aws_s3_bucket.default.bucket
+    name     = "artifacts"
+  }
+
+  cache {
+    type     = "S3"
+    location = aws_s3_bucket.default.bucket
+  }
+
+  environment {
+    compute_type                = var.compute_type
+    image                       = var.codebuild_image
+    type                        = "LINUX_CONTAINER"
+    image_pull_credentials_type = "CODEBUILD"
+
+    environment_variable {
+      name  = "PROWLER_OPTIONS"
+      value = var.prowler_options
+    }
+  }
+
+  logs_config {
+    cloudwatch_logs {
+      status      = var.cloudwatch_logs_status
+      group_name  = var.log_group
+      stream_name = var.log_stream
+    }
+
+    s3_logs {
+      status   = var.s3_logs_status
+      location = var.s3_logs_status == "ENABLED" ? "${aws_s3_bucket.default.id}/build-log" : null
+    }
+  }
+
+  source {
+    type = "NO_SOURCE"
+    buildspec = file("${path.module}/buildspec.yml")
+  }
+
+  tags = var.tags
+}
