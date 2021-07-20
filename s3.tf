@@ -1,10 +1,10 @@
 resource "aws_s3_bucket" "test1" {
   bucket = "${local.s3_prefix}-test1"
   acl    = "public-read"
-  tags   = {
-    Project = "Prowler",
-    Private = "false",
-    Encripted = "true",
+  tags = {
+    Project    = "Prowler",
+    Private    = "false",
+    Encripted  = "true",
     TestStatus = "false"
   }
 
@@ -20,10 +20,10 @@ resource "aws_s3_bucket" "test1" {
 resource "aws_s3_bucket" "test2" {
   bucket = "${local.s3_prefix}-test2"
   acl    = "public-read"
-  tags   = {
-    Project = "Prowler",
-    Private = "false",
-    Encripted = "false",
+  tags = {
+    Project    = "Prowler",
+    Private    = "false",
+    Encripted  = "false",
     TestStatus = "false"
   }
 }
@@ -31,10 +31,10 @@ resource "aws_s3_bucket" "test2" {
 resource "aws_s3_bucket" "test3" {
   bucket = "${local.s3_prefix}-test3"
   acl    = "private"
-  tags   = {
-    Project = "Prowler",
-    Private = "true",
-    Encripted = "false",
+  tags = {
+    Project    = "Prowler",
+    Private    = "true",
+    Encripted  = "false",
     TestStatus = "false"
   }
 }
@@ -42,10 +42,10 @@ resource "aws_s3_bucket" "test3" {
 resource "aws_s3_bucket" "test4" {
   bucket = "${local.s3_prefix}-test4"
   acl    = "private"
-  tags   = {
-    Project = "Prowler",
-    Private = "true",
-    Encripted = "true",
+  tags = {
+    Project    = "Prowler",
+    Private    = "true",
+    Encripted  = "true",
     TestStatus = "true"
   }
 

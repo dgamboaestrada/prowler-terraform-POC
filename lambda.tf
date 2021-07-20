@@ -44,8 +44,8 @@ resource "aws_lambda_function" "default" {
   handler          = "index.handler"
   runtime          = "nodejs12.x"
   role             = aws_iam_role.default.arn
-  tags             = {
-    Project = "Prowler",
+  tags = {
+    Project    = "Prowler",
     TestStatus = "false"
   }
 }
