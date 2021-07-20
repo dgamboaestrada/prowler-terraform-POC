@@ -1,12 +1,33 @@
 ---
 Prowler
 ---
-POC of [Prowler](https://github.com/toniblyx/prowler) + [Terraform]https://www.terraform.io/().
+POC of [Prowler](https://github.com/toniblyx/prowler) + [Terraform](https://www.terraform.io/).
 
 [Codebuild module](./prowler-codebuild)
 
+# Requirements
+- [Prowler](https://github.com/toniblyx/prowler)
+- [Terraform](https://www.terraform.io/)
+
+# Setup
+1. Clone the project
+```bash
+git clone git@github.com:dgamboaestrada/prowler-terraform-POC.git
+```
+2. Enter to the project
+```bash
+cd prowler-terraform-POC
+```
+3. Init terraform
+```bash
+terraform init
+```
+4. Create AWS resources
+```bash
+terraform apply
+```
+
 # Prowler commands using docker
-https://github.com/toniblyx/prowler
 
 ### Display help
 ```bash
