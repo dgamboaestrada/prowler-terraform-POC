@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+
+# Prowler - the handy cloud security tool (copyright 2019) by Toni de la Fuente
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may not
+# use this file except in compliance with the License. You may obtain a copy
+# of the License at http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software distributed
+# under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+# CONDITIONS OF ANY KIND, either express or implied. See the License for the
+# specific language governing permissions and limitations under the License.
+
+# Remediation:
+#
+#   here URL to the relevand/official documentation
+#
+#   here commands or steps to fix it if avalable, like:
+#   aws logs put-metric-filter \
+#     --region us-east-1 \
+#     --log-group-name CloudTrail/MyCloudTrailLG \
+#     --filter-name AWSCloudTrailChanges \
+#     --filter-pattern '{ ($.eventName = CreateTrail) || ($.eventName = UpdateTrail) || ($.eventName = DeleteTrail) || ($.eventName = StartLogging) || ($.eventName = StopLogging) }' \
+#     --metric-transformations metricName=CloudTrailEventCount,metricNamespace=CloudTrailMetrics,metricValue=1
+
+
+CHECK_ID_cloudsec251="25.1"
+CHECK_TITLE_cloudsec251="[cloudsec251] Ensure users with policies that allow full administrative privileges are not created"
+CHECK_SCORED_cloudsec251="NOT_SCORED"
+CHECK_TYPE_cloudsec251="EXTRA"
+CHECK_SEVERITY_cloudsec251="Medium"
+CHECK_ASFF_RESOURCE_TYPE_cloudsec251="AwsIamUser" # Choose appropriate value from https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-findings-format.html#asff-resources
+CHECK_ALTERNATE_cloudsec251="cloudsec251"
+CHECK_SERVICENAME_cloudsec251="iam" # get service short name from `curl -s https://api.regional-table.region-services.aws.a2z.com/index.json | jq -r '.prices[] | .id' | awk -F: '{ print $1 }' | sort -u` 
+
+cloudsec251(){
+  # "Ensure users with policies that allow full \"*:*\" administrative privileges are not created"
+  USERS=$($AWSCLI $PROFILE_OPT iam list-users --output text --query 'Users[*].UserName')
+  if [[ $USERS ]]; then
+    for user in $USERS; do
+      FULL_ADMIN_POLICIES=""
+      # Get attached policies to the user.
+      USER_POLICY_ARNS=$($AWSCLI $PROFILE_OPT iam list-attached-user-policies --user-name $user --output text --query 'AttachedPolicies[*].PolicyArn')
+      # Get attached group to the user.
+      USER_GROUPS=$($AWSCLI $PROFILE_OPT iam list-groups-for-user --user-name $user --output text --query 'Groups[].GroupName')
+      # Get policies attached to the groups.
+      for user_group in $USER_GROUPS; do
+        POLICIES=$($AWSCLI $PROFILE_OPT iam list-attached-group-policies --group-name $user_group --output text --query 'AttachedPolicies[].PolicyArn')
+        if [[ $POLICIES ]]; then
+          USER_POLICY_ARNS="$USER_POLICY_ARNS $POLICIES"
+        fi
+      done
+      # Looking for policies with full administrative privileges.
+      for policy_arn in $USER_POLICY_ARNS; do
+        POLICY_VERSION=$($AWSCLI $PROFILE_OPT iam get-policy --policy-arn $policy_arn --output text --query 'Policy.DefaultVersionId')
+        POLICY_WITH_FULL=$($AWSCLI iam get-policy-version --output text --policy-arn $policy_arn --version-id $POLICY_VERSION --query "[PolicyVersion.Document.Statement] | [] | [?Action!=null] | [?Effect == 'Allow' && Resource == '*' && Action == '*']" $PROFILE_OPT --region $REGION)
+        if [[ $POLICY_WITH_FULL ]]; then
+          textFail "$REGION: $user / Full administrative privileges / via policy arn: $policy_arn"
+          FULL_ADMIN_POLICIES="$FULL_ADMIN_POLICIES $policy_arn"
+        fi
+      done
+      if [[ ! $FULL_ADMIN_POLICIES ]]; then
+        textPass "$REGION: $user / No attached policy found that allow full administrative privileges"
+      fi
+    done
+  fi
+}
