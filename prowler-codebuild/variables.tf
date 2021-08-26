@@ -13,7 +13,7 @@ variable "description" {
 variable "tags" {
   description = "(Optional) A map of tags to attach to the build project"
   type        = map(string)
-  default     = {
+  default = {
     Project = "Prowler"
   }
 }
@@ -24,16 +24,10 @@ variable "cloudwatch_logs_status" {
   default     = "ENABLED"
 }
 
-variable "log_group" {
-  type        = string
-  description = "(Optional) The group name of the logs in CloudWatch Logs."
-  default     = "codebuild-prowler"
-}
-
-variable "log_stream" {
-  type        = string
-  description = "(Optional) The stream name of the logs in CloudWatch Logs."
-  default     = "log-stream"
+variable "logs_retention_in_days" {
+  description = "(Optional) Specifies the number of days you want to retain the cloudwatch log groups. Possible values are: 1, 3, 5, 7, 14, 30, 60, 90, 120, 150, 180, 365, 400, 545, 731, 1827, 3653, and 0. If you select 0, the events in the log group are always retained and never expire"
+  type        = number
+  default     = 1
 }
 
 variable "s3_logs_status" {

@@ -30,8 +30,8 @@ resource "aws_codebuild_project" "default" {
   logs_config {
     cloudwatch_logs {
       status      = var.cloudwatch_logs_status
-      group_name  = var.log_group
-      stream_name = var.log_stream
+      group_name  = local.log_group_name
+      stream_name = "log-stream"
     }
 
     s3_logs {
@@ -41,9 +41,15 @@ resource "aws_codebuild_project" "default" {
   }
 
   source {
-    type = "NO_SOURCE"
+    type      = "NO_SOURCE"
     buildspec = file("${path.module}/buildspec.yml")
   }
 
   tags = var.tags
+}
+
+resource "aws_cloudwatch_log_group" "codebuild" {
+  name              = local.log_group_name
+  retention_in_days = var.logs_retention_in_days
+  tags              = var.tags
 }

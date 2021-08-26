@@ -1,5 +1,5 @@
 resource "aws_iam_role_policy" "default" {
-  role = aws_iam_role.default.name
+  role   = aws_iam_role.default.name
   policy = data.aws_iam_policy_document.default.json
 }
 
