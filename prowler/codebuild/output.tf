@@ -22,7 +22,7 @@ output "role_arn" {
   value = aws_iam_role.default.arn
 }
 
-output "project_id" {
+output "id" {
   value = aws_codebuild_project.default.id
 }
 

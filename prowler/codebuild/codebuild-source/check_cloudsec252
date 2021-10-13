@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+
+# Prowler - the handy cloud security tool (copyright 2019) by Toni de la Fuente
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may not
+# use this file except in compliance with the License. You may obtain a copy
+# of the License at http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software distributed
+# under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+# CONDITIONS OF ANY KIND, either express or implied. See the License for the
+# specific language governing permissions and limitations under the License.
+
+# Remediation:
+#
+#   here URL to the relevand/official documentation
+#
+#   here commands or steps to fix it if avalable, like:
+#   aws logs put-metric-filter \
+#     --region us-east-1 \
+#     --log-group-name CloudTrail/MyCloudTrailLG \
+#     --filter-name AWSCloudTrailChanges \
+#     --filter-pattern '{ ($.eventName = CreateTrail) || ($.eventName = UpdateTrail) || ($.eventName = DeleteTrail) || ($.eventName = StartLogging) || ($.eventName = StopLogging) }' \
+#     --metric-transformations metricName=CloudTrailEventCount,metricNamespace=CloudTrailMetrics,metricValue=1
+
+
+CHECK_ID_cloudsec252="25.2"
+CHECK_TITLE_cloudsec252="[cloudsec252] Ensure default VPC are not created"
+CHECK_SCORED_cloudsec252="NOT_SCORED"
+CHECK_TYPE_cloudsec252="EXTRA"
+CHECK_SEVERITY_cloudsec252="Medium"
+CHECK_ASFF_RESOURCE_TYPE_cloudsec252="AwsEc2Vpc" # Choose appropriate value from https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-findings-format.html#asff-resources
+CHECK_ALTERNATE_cloudsec252="cloudsec252"
+CHECK_SERVICENAME_cloudsec252="vpc" # get service short name from `curl -s https://api.regional-table.region-services.aws.a2z.com/index.json | jq -r '.prices[] | .id' | awk -F: '{ print $1 }' | sort -u` 
+
+cloudsec252(){
+  # "Ensure default VPCs are not created"
+  for regx in $REGIONS; do
+      vpcx=$($AWSCLI ec2 describe-vpcs $PROFILE_OPT --region $regx --filters "Name=is-default,Values=true" --query 'Vpcs[0].VpcId')
+    if [[ $vpcx == "null" ]]; then
+      textPass "No default VPC found for region $regx" "$regx" "$vpcx"
+    else
+      textFail "$regx: Default VPC $vpcx was found" "$regx" "$vpcx"
+    fi
+done
+}

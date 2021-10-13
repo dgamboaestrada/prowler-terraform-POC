@@ -15,4 +15,4 @@ GROUP_ID[25]='cloudsec'
 GROUP_NUMBER[25]='25.0'
 GROUP_TITLE[25]='CloudSec - Custom checks - [cloudsec] ****************************'
 GROUP_RUN_BY_DEFAULT[25]='N' # run it when execute_all is called
-GROUP_CHECKS[25]='cloudsec251'
+GROUP_CHECKS[25]='cloudsec251,cloudsec252'

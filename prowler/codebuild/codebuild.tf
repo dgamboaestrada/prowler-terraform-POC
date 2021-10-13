@@ -1,5 +1,9 @@
+locals {
+  log_group_name = "/aws/codebuild/${var.prefix}prowler"
+}
+
 resource "aws_codebuild_project" "default" {
-  name          = "${local.prefix}prowler"
+  name          = "${var.prefix}prowler"
   description   = var.description
   build_timeout = var.build_timeout
   service_role  = aws_iam_role.default.arn
@@ -41,7 +45,8 @@ resource "aws_codebuild_project" "default" {
   }
 
   source {
-    type      = "NO_SOURCE"
+    type      = "S3"
+    location  = "${aws_s3_bucket.default.id}/codebuild-source/"
     buildspec = file("${path.module}/buildspec.yml")
   }
 
@@ -52,4 +57,13 @@ resource "aws_cloudwatch_log_group" "codebuild" {
   name              = local.log_group_name
   retention_in_days = var.logs_retention_in_days
   tags              = var.tags
+}
+
+resource "aws_codebuild_report_group" "default" {
+  name = "${var.prefix}prowler-checks"
+  type = "TEST"
+
+  export_config {
+    type = "NO_EXPORT"
+  }
 }

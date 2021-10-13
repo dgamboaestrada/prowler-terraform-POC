@@ -1,5 +1,5 @@
 resource "aws_iam_role" "default" {
-  name = "${var.prefix}-prowler-codebuild-trigger"
+  name = "${var.prefix}prowler-codebuild-trigger"
 
   assume_role_policy = <<EOF
 {

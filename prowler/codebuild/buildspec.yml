@@ -13,6 +13,8 @@ phases:
       - pip3 install detect-secrets
       - apt-get -y install jq
       - git clone https://github.com/toniblyx/prowler
+      - cp check* prowler/checks/
+      - cp group* prowler/groups/
   build:
     commands:
       - echo "Running Prowler as ./prowler $PROWLER_OPTIONS"
@@ -22,7 +24,7 @@ phases:
     commands:
       - echo "Nothing to do in the post_build phase..."
 reports:
-  prowler:
+  checks:
     files:
       - '**/*'
     base-directory: 'prowler/junit-reports'
