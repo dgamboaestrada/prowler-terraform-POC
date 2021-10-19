@@ -1,4 +1,4 @@
-data "aws_iam_policy_document" "cloudwatch_mapper_records_table" {
+data "aws_iam_policy_document" "default" {
   statement {
     effect = "Allow"
 

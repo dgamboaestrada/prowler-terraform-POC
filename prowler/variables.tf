@@ -60,16 +60,6 @@ variable "codebuild_image" {
   default     = "aws/codebuild/standard:3.0"
 }
 
-variable "codebuild_fail_lamba_invoke_arn" {
-  description = "The lambda arn to invoke if the build fail"
-  type        = string
-}
-
-variable "codebuild_fail_lamba_invoke_id" {
-  description = "The lambda id to invoke if the build fail"
-  type        = string
-}
-
 variable "notification_email" {
   description = "(Required) The email to send the notification"
   type        = string

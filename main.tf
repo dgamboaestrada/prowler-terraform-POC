@@ -15,6 +15,6 @@ module "prowler" {
   cloudwatch_logs_status = "ENABLED"
   s3_logs_status         = "ENABLED"
   prefix                 = local.prefix
-  prowler_options        = "-f us-east-1 -c check12,check15,check16,extra73,extra764,extra760,cloudsec251,cloudsec252 -M html,json,text,junit-xml"
+  prowler_options        = "-f us-east-1 -c check12,check15,check16,extra73,extra764,extra760,organizations251,organizations252 -M html,json,text,junit-xml"
   notification_email     = var.notification_email
 }

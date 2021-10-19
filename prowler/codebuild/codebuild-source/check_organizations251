@@ -24,16 +24,16 @@
 #     --metric-transformations metricName=CloudTrailEventCount,metricNamespace=CloudTrailMetrics,metricValue=1
 
 
-CHECK_ID_cloudsec251="25.1"
-CHECK_TITLE_cloudsec251="[cloudsec251] Ensure users with policies that allow full administrative privileges are not created"
-CHECK_SCORED_cloudsec251="NOT_SCORED"
-CHECK_TYPE_cloudsec251="EXTRA"
-CHECK_SEVERITY_cloudsec251="Medium"
-CHECK_ASFF_RESOURCE_TYPE_cloudsec251="AwsIamUser" # Choose appropriate value from https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-findings-format.html#asff-resources
-CHECK_ALTERNATE_cloudsec251="cloudsec251"
-CHECK_SERVICENAME_cloudsec251="iam" # get service short name from `curl -s https://api.regional-table.region-services.aws.a2z.com/index.json | jq -r '.prices[] | .id' | awk -F: '{ print $1 }' | sort -u` 
+CHECK_ID_organizations251="25.1"
+CHECK_TITLE_organizations251="[organizations251] Ensure users with policies that allow full administrative privileges are not created"
+CHECK_SCORED_organizations251="NOT_SCORED"
+CHECK_TYPE_organizations251="EXTRA"
+CHECK_SEVERITY_organizations251="Medium"
+CHECK_ASFF_RESOURCE_TYPE_organizations251="AwsIamUser" # Choose appropriate value from https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-findings-format.html#asff-resources
+CHECK_ALTERNATE_organizations251="organizations251"
+CHECK_SERVICENAME_organizations251="iam" # get service short name from `curl -s https://api.regional-table.region-services.aws.a2z.com/index.json | jq -r '.prices[] | .id' | awk -F: '{ print $1 }' | sort -u` 
 
-cloudsec251(){
+organizations251(){
   # "Ensure users with policies that allow full \"*:*\" administrative privileges are not created"
   USERS=$($AWSCLI $PROFILE_OPT iam list-users --output text --query 'Users[*].UserName')
   if [[ $USERS ]]; then

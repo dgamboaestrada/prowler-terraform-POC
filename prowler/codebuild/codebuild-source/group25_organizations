@@ -11,8 +11,8 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 
-GROUP_ID[25]='cloudsec'
+GROUP_ID[25]='organizations'
 GROUP_NUMBER[25]='25.0'
-GROUP_TITLE[25]='CloudSec - Custom checks - [cloudsec] ****************************'
+GROUP_TITLE[25]='AWS Organizations - Best Practices - [organizations] ****************************'
 GROUP_RUN_BY_DEFAULT[25]='N' # run it when execute_all is called
-GROUP_CHECKS[25]='cloudsec251,cloudsec252'
+GROUP_CHECKS[25]='organizations251,organizations252'

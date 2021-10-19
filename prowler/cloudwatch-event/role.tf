@@ -21,5 +21,5 @@ EOF
 resource "aws_iam_role_policy" "default" {
   name   = "${var.prefix}prowler-codebuild-trigger"
   role   = aws_iam_role.default.id
-  policy = data.aws_iam_policy_document.cloudwatch_mapper_records_table.json
+  policy = data.aws_iam_policy_document.default.json
 }

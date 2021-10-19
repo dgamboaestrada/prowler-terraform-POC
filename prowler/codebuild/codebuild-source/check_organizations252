@@ -24,16 +24,16 @@
 #     --metric-transformations metricName=CloudTrailEventCount,metricNamespace=CloudTrailMetrics,metricValue=1
 
 
-CHECK_ID_cloudsec252="25.2"
-CHECK_TITLE_cloudsec252="[cloudsec252] Ensure default VPC are not created"
-CHECK_SCORED_cloudsec252="NOT_SCORED"
-CHECK_TYPE_cloudsec252="EXTRA"
-CHECK_SEVERITY_cloudsec252="Medium"
-CHECK_ASFF_RESOURCE_TYPE_cloudsec252="AwsEc2Vpc" # Choose appropriate value from https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-findings-format.html#asff-resources
-CHECK_ALTERNATE_cloudsec252="cloudsec252"
-CHECK_SERVICENAME_cloudsec252="vpc" # get service short name from `curl -s https://api.regional-table.region-services.aws.a2z.com/index.json | jq -r '.prices[] | .id' | awk -F: '{ print $1 }' | sort -u` 
+CHECK_ID_organizations252="25.2"
+CHECK_TITLE_organizations252="[organizations252] Ensure default VPC are not created"
+CHECK_SCORED_organizations252="NOT_SCORED"
+CHECK_TYPE_organizations252="EXTRA"
+CHECK_SEVERITY_organizations252="Medium"
+CHECK_ASFF_RESOURCE_TYPE_organizations252="AwsEc2Vpc" # Choose appropriate value from https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-findings-format.html#asff-resources
+CHECK_ALTERNATE_organizations252="organizations252"
+CHECK_SERVICENAME_organizations252="vpc" # get service short name from `curl -s https://api.regional-table.region-services.aws.a2z.com/index.json | jq -r '.prices[] | .id' | awk -F: '{ print $1 }' | sort -u` 
 
-cloudsec252(){
+organizations252(){
   # "Ensure default VPCs are not created"
   for regx in $REGIONS; do
       vpcx=$($AWSCLI ec2 describe-vpcs $PROFILE_OPT --region $regx --filters "Name=is-default,Values=true" --query 'Vpcs[0].VpcId')
